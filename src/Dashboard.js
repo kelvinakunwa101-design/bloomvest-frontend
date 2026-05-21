@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
-import { motion } from "framer-motion";
 import API_URL from "./config/api";
 
 import {
