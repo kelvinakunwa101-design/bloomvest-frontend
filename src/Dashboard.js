@@ -20,22 +20,20 @@ function Dashboard() {
   const [wallet, setWallet] = useState({ balance: 0 });
   const [loading, setLoading] = useState(true);
 
-  const [type, setType] = useState("deposit");
-  const [amount, setAmount] = useState("");
-
   const token = localStorage.getItem("token");
 
+  // AUTH GUARD
   useEffect(() => {
     if (!token) window.location.href = "/";
   }, [token]);
 
+  // USER
   let user = null;
-  if (token) {
-    try {
-      user = jwtDecode(token);
-    } catch {}
-  }
+  try {
+    if (token) user = jwtDecode(token);
+  } catch {}
 
+  // LOAD DATA
   const load = useCallback(async () => {
     try {
       const [txRes, invRes] = await Promise.all([
@@ -76,15 +74,17 @@ function Dashboard() {
     if (token) load();
   }, [token, load]);
 
+  // METRICS
   const profit = transactions.reduce(
     (acc, t) =>
       t.type === "profit" ? acc + Number(t.amount || 0) : acc,
     0
   );
 
+  // CHART DATA
   const profitTrend = transactions.map((t, i) => ({
     index: i + 1,
-    amount: t.type === "profit" ? t.amount : 0,
+    amount: t.type === "profit" ? Number(t.amount) : 0,
   }));
 
   const pieData = [
@@ -108,70 +108,63 @@ function Dashboard() {
 
   const COLORS = ["#4f9cff", "#ef4444", "#22c55e"];
 
-  const addTransaction = async () => {
-    if (!amount) return;
-
-    const res = await fetch(`${API_URL}/api/transactions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        type,
-        amount: Number(amount),
-        description: "Investor transaction",
-      }),
-    });
-
-    const data = await res.json();
-
-    if (data?._id) setTransactions([data, ...transactions]);
-
-    setAmount("");
-  };
-
   return (
     <div className="app">
+
       {/* SIDEBAR */}
       <div className="sidebar">
         <div>
           <h2 className="logo">Bloomvest</h2>
-          <p className="user">{user?.name || "Investor"}</p>
+          <p className="sub">Investor Analytics</p>
 
-          <div className="badge">📊 Analytics Mode</div>
-          <div className="badge">⚡ Live Data</div>
+          <div className="userBox">
+            <p className="userName">{user?.name || "Investor"}</p>
+            <p className="userEmail">{user?.email}</p>
+          </div>
+
+          <div className="badge">📊 Live Portfolio</div>
+          <div className="badge">⚡ Real-time Engine</div>
           <div className="badge">🔐 Secure API</div>
+        </div>
+
+        <div className="sideFooter">
+          <p>System Status: <span className="live">ONLINE</span></p>
         </div>
       </div>
 
       {/* MAIN */}
       <div className="main">
 
-        {/* HEADER STRIP (NEW IMPACT FEATURE) */}
-        <div className="topbar">
+        {/* HEADER */}
+        <div className="header">
           <div>
-            <h1>Investor Dashboard</h1>
-            <p className="muted">{user?.email}</p>
+            <h1>Portfolio Dashboard</h1>
+            <p className="muted">Welcome back, {user?.name}</p>
           </div>
 
-          <div className="status">
-            Live • {new Date().toLocaleTimeString()}
+          <div className="balanceCard">
+            ${wallet.balance.toLocaleString()}
+            <span>Live Balance</span>
           </div>
         </div>
 
-        {/* KPI CARDS */}
+        {/* INSIGHT */}
+        <div className="insight">
+          📈 Insight: Portfolio is stable with positive deposit activity.
+        </div>
+
+        {/* KPI */}
         <div className="grid">
-          <Metric title="Wallet Balance" value={`$${wallet.balance.toLocaleString()}`} />
-          <Metric title="Transactions" value={transactions.length} />
-          <Metric title="Investments" value={investments.length} />
-          <Metric title="Profit" value={`$${profit.toLocaleString()}`} />
+          <KPI title="Wallet" value={`$${wallet.balance}`} />
+          <KPI title="Transactions" value={transactions.length} />
+          <KPI title="Investments" value={investments.length} />
+          <KPI title="Profit" value={`$${profit}`} />
         </div>
 
         {/* CHARTS */}
         <div className="panel">
-          <h3>Profit Trend</h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <h3>Performance Trend</h3>
+          <ResponsiveContainer width="100%" height={260}>
             <LineChart data={profitTrend}>
               <XAxis dataKey="index" />
               <YAxis />
@@ -182,8 +175,8 @@ function Dashboard() {
         </div>
 
         <div className="panel">
-          <h3>Portfolio Breakdown</h3>
-          <ResponsiveContainer width="100%" height={250}>
+          <h3>Portfolio Distribution</h3>
+          <ResponsiveContainer width="100%" height={260}>
             <PieChart>
               <Pie data={pieData} dataKey="value" outerRadius={90}>
                 {pieData.map((_, i) => (
@@ -194,31 +187,9 @@ function Dashboard() {
           </ResponsiveContainer>
         </div>
 
-        {/* TRANSACTION */}
+        {/* TABLE */}
         <div className="panel">
-          <h3>Execute Transaction</h3>
-
-          <div className="form">
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="deposit">Deposit</option>
-              <option value="withdrawal">Withdraw</option>
-              <option value="profit">Profit</option>
-            </select>
-
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Amount"
-            />
-
-            <button onClick={addTransaction}>Execute</button>
-          </div>
-        </div>
-
-        {/* LEDGER */}
-        <div className="panel">
-          <h3>Transaction Feed</h3>
+          <h3>Transaction Ledger</h3>
 
           {loading ? (
             <p className="muted">Loading...</p>
@@ -236,111 +207,107 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* STYLE POLISH ONLY */}
+      {/* STYLE */}
       <style>{`
-        .app {
-          display: flex;
-          min-height: 100vh;
-          background: #0b1220;
-          color: white;
-          font-family: Inter, sans-serif;
-        }
+        body { margin:0; font-family:Inter,sans-serif; background:#0b1220; }
+
+        .app { display:flex; min-height:100vh; color:white; }
 
         .sidebar {
-          width: 260px;
-          padding: 25px;
-          background: rgba(255,255,255,0.03);
-          border-right: 1px solid rgba(255,255,255,0.05);
+          width:260px;
+          padding:25px;
+          background:rgba(255,255,255,0.03);
+          border-right:1px solid rgba(255,255,255,0.05);
+          display:flex;
+          flex-direction:column;
+          justify-content:space-between;
         }
 
-        .logo { color: #4f9cff; }
+        .logo { color:#4f9cff; }
 
-        .user { opacity: 0.8; margin-bottom: 20px; }
+        .sub { opacity:0.6; font-size:12px; }
+
+        .userBox { margin:20px 0; }
+
+        .userName { font-weight:bold; }
+        .userEmail { font-size:12px; opacity:0.6; }
 
         .badge {
-          margin-top: 10px;
-          padding: 10px;
-          border-radius: 10px;
-          background: rgba(255,255,255,0.05);
-          font-size: 12px;
+          margin-top:10px;
+          padding:8px;
+          background:rgba(255,255,255,0.05);
+          border-radius:10px;
+          font-size:12px;
         }
 
-        .main { flex: 1; padding: 30px; }
+        .live { color:#22c55e; }
 
-        .topbar {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .main { flex:1; padding:30px; }
+
+        .header {
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
         }
 
-        .muted { opacity: 0.6; }
+        .balanceCard {
+          background:#111a2e;
+          padding:15px 20px;
+          border-radius:12px;
+          font-size:20px;
+          font-weight:bold;
+        }
 
-        .status {
-          padding: 8px 12px;
-          border-radius: 10px;
-          background: rgba(0,255,120,0.1);
-          font-size: 12px;
+        .balanceCard span {
+          display:block;
+          font-size:12px;
+          opacity:0.6;
+        }
+
+        .insight {
+          margin:20px 0;
+          padding:12px;
+          background:rgba(79,156,255,0.1);
+          border-radius:10px;
         }
 
         .grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 15px;
-          margin-top: 25px;
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+          gap:15px;
         }
 
         .panel {
-          margin-top: 25px;
-          padding: 20px;
-          border-radius: 16px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .form {
-          display: flex;
-          gap: 10px;
-          margin-top: 10px;
-        }
-
-        input, select {
-          padding: 10px;
-          border-radius: 10px;
-          border: none;
-        }
-
-        button {
-          background: #4f9cff;
-          border: none;
-          padding: 10px 14px;
-          border-radius: 10px;
-          color: white;
-          font-weight: bold;
+          margin-top:20px;
+          padding:20px;
+          background:rgba(255,255,255,0.04);
+          border-radius:14px;
         }
 
         .row {
-          display: flex;
-          justify-content: space-between;
-          padding: 12px 0;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
+          display:flex;
+          justify-content:space-between;
+          padding:10px 0;
+          border-bottom:1px solid rgba(255,255,255,0.05);
         }
 
         .tag {
-          padding: 5px 10px;
-          border-radius: 20px;
-          font-size: 12px;
-          text-transform: capitalize;
+          padding:4px 8px;
+          border-radius:20px;
+          font-size:12px;
         }
 
-        .deposit { background: #1f8f5f; }
-        .withdrawal { background: #c0392b; }
-        .profit { background: #f39c12; }
+        .deposit { background:#1f8f5f; }
+        .withdrawal { background:#c0392b; }
+        .profit { background:#f39c12; }
+
+        .muted { opacity:0.6; }
       `}</style>
     </div>
   );
 }
 
-function Metric({ title, value }) {
+function KPI({ title, value }) {
   return (
     <div className="panel">
       <h4>{title}</h4>
