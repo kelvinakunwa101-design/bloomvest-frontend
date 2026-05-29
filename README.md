@@ -1,70 +1,130 @@
-# Getting Started with Create React App
+# Bloomvest Fintech Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bloomvest is a modern MERN-stack fintech dashboard built for portfolio and SaaS demonstration purposes.
 
-## Available Scripts
+It features secure authentication, portfolio analytics, investment tracking, transaction management, responsive charts, and a polished fintech-inspired UI.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🚀 Live Demo
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Frontend:
+https://bloomvest-frontend-ten.vercel.app/
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## ✨ Features
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- JWT Authentication
+- Protected Dashboard
+- Wallet Balance Tracking
+- Investment Analytics
+- Transaction Ledger
+- Profit Monitoring
+- Responsive Charts with Recharts
+- Responsive Mobile UI
+- Modern Fintech Dashboard Design
+- Auto Deployment with Vercel
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🛠️ Tech Stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Frontend
+- React.js
+- Recharts
+- CSS3
+- JWT Decode
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT Authentication
 
 ### Deployment
+- Vercel (Frontend)
+- Render (Backend)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 📊 Dashboard Modules
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- Wallet Overview
+- Investment Metrics
+- Profit Trends
+- Portfolio Distribution
+- Recent Activity Feed
+- Transaction History
+
+---
+
+## 🔐 Authentication
+
+Bloomvest uses JWT-based authentication for secure user login and protected dashboard access.
+
+---
+
+## 📱 Responsive Design
+
+The application is optimized for:
+- Desktop
+- Tablet
+- Mobile Devices
+
+---
+
+## ⚡ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/yourusername/bloomvest.git
+```
+
+### Install Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+### Install Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+---
+
+## 🌐 Environment Variables
+
+Create a `.env` file inside the backend folder:
+
+```env
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+PORT=5000
+```
+
+---
+
+## 📷 Screenshots
+
+Add screenshots here later.
+
+---
+
+## 👨‍💻 Author
+
+Kelvin Akunwa
+
+---
+
+## 📄 License
+
+This project is for educational and portfolio purposes.
