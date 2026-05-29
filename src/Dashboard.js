@@ -20,17 +20,7 @@ function Dashboard() {
   const [wallet, setWallet] = useState({ balance: 0 });
   const [loading, setLoading] = useState(true);
 
-  const [token, setToken] = useState("");
-
-useEffect(() => {
-  const storedToken = localStorage.getItem("token");
-
-  if (storedToken) {
-    setToken(storedToken);
-  } else {
-    window.location.href = "/";
-  }
-}, []);
+  const token = localStorage.getItem("token");
 
   // AUTH GUARD
   useEffect(() => {
