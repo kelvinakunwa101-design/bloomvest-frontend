@@ -20,7 +20,17 @@ function Dashboard() {
   const [wallet, setWallet] = useState({ balance: 0 });
   const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState("");
+
+useEffect(() => {
+  const storedToken = localStorage.getItem("token");
+
+  if (storedToken) {
+    setToken(storedToken);
+  } else {
+    window.location.href = "/";
+  }
+}, []);
 
   // AUTH GUARD
   useEffect(() => {
@@ -37,9 +47,13 @@ function Dashboard() {
   // LOAD DATA
   const load = useCallback(async () => {
     try {
+      console.log("TOKEN BEING SENT:", token);
       const [txRes, invRes] = await Promise.all([
         fetch(`${API_URL}/api/transactions`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+  Authorization: `Bearer ${token}`,
+  "Content-Type": "application/json",
+},
         }),
         fetch(`${API_URL}/api/investments`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -76,9 +90,10 @@ function Dashboard() {
   }, [token]);
 
   useEffect(() => {
-    if (token) load();
-  }, [token, load]);
-
+  if (token) {
+    load();
+  }
+}, [token, load]);
   // METRICS
   const profit = transactions.reduce(
     (acc, t) =>
