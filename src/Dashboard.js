@@ -40,48 +40,36 @@ function Dashboard() {
 
   // LOAD DATA
   const load = useCallback(async () => {
-    try {
-      console.log("TOKEN BEING SENT:", token);
-      const [txRes, invRes] = await Promise.all([
-        fetch(`${API_URL}/api/transactions`, {
-          headers: {
-  Authorization: `Bearer ${token}`,
-  "Content-Type": "application/json",
-},
-        }),
-        fetch(`${API_URL}/api/investments`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
+  try {
+    console.log("TOKEN BEING SENT:", token);
 
-      const tx = await txRes.json();
-      const inv = await invRes.json();
+    const [txRes, invRes] = await Promise.all([
+      fetch(`${API_URL}/api/transactions`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
 
-      const safeTx = Array.isArray(tx) ? tx : [];
-      const safeInv = Array.isArray(inv) ? inv : [];
+      fetch(`${API_URL}/api/investments`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }),
+    ]);
 
-      setTransactions(safeTx);
-      setInvestments(safeInv);
+    const txData = await txRes.json();
+    const invData = await invRes.json();
 
-      const balance = safeTx.reduce((acc, t) => {
-        if (t.type === "deposit" || t.type === "profit") {
-          return acc + Number(t.amount || 0);
-        }
-
-        if (t.type === "withdrawal") {
-          return acc - Number(t.amount || 0);
-        }
-
-        return acc;
-      }, 0);
-
-      setWallet({ balance });
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [token]);
+    setTransactions(txData || []);
+    setInvestments(invData || []);
+  } catch (err) {
+    console.error("Dashboard load error:", err);
+  } finally {
+    setLoading(false);
+  }
+}, [token]);
 
   useEffect(() => {
   if (token) {
