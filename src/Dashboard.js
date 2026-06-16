@@ -19,7 +19,7 @@ import {
 function Dashboard() {
   const [transactions, setTransactions] = useState([]);
   const [investments, setInvestments] = useState([]);
-  const [wallet, setWallet] = useState({ balance: 0 });
+  const [wallet] = useState({ balance: 0 });
   const [loading, setLoading] = useState(true);
   
   const [searchTerm, setSearchTerm] = useState("");
