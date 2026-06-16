@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import API_URL from "./config/api";
 
+import TrendingSearch from "../components/TrendingSearch";
+
 import {
   ResponsiveContainer,
   LineChart,
@@ -19,7 +21,9 @@ function Dashboard() {
   const [investments, setInvestments] = useState([]);
   const [wallet, setWallet] = useState({ balance: 0 });
   const [loading, setLoading] = useState(true);
-
+  
+  const [searchTerm, setSearchTerm] = useState("");
+  
   const token = localStorage.getItem("token");
 
   // AUTH GUARD
@@ -118,6 +122,26 @@ function Dashboard() {
 
   const COLORS = ["#4f9cff", "#ef4444", "#22c55e"];
 
+
+  const handleTrendingSelect = (searchTerm) => {
+  console.log("Trending clicked:", searchTerm);
+  setSearchTerm(searchTerm);
+};
+
+
+  const filteredTransactions = searchTerm
+  ? transactions.filter((t) => {
+      return (
+        t.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(t.amount).includes(searchTerm) ||
+        new Date(t.createdAt)
+          .toLocaleDateString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    })
+  : transactions;
+
   return (
     <div className="app">
 
@@ -190,30 +214,15 @@ function Dashboard() {
           deposit activity.
         </div>
 
+          <TrendingSearch onSelect={handleTrendingSelect} />
+        
         {/* KPI */}
         <div className="grid">
-
-          <KPI
-            title="Wallet"
-            value={`$${wallet.balance.toLocaleString()}`}
-          />
-
-          <KPI
-            title="Transactions"
-            value={transactions.length}
-          />
-
-          <KPI
-            title="Investments"
-            value={investments.length}
-          />
-
-          <KPI
-            title="Profit"
-            value={`$${profit.toLocaleString()}`}
-          />
-
-        </div>
+          <KPI title="Wallet" value={`$${wallet.balance.toLocaleString()}`} />
+          <KPI title="Transactions" value={transactions.length} />
+          <KPI title="Investments" value={investments.length} />
+          <KPI title="Profit" value={`$${profit.toLocaleString()}`} />
+         </div>
 
         {/* CHARTS */}
         <div className="chartsGrid">
@@ -298,7 +307,7 @@ function Dashboard() {
               </p>
             </div>
           ) : (
-            transactions.map((t) => (
+            filteredTransactions.map((t) => (
               <div key={t._id} className="row">
 
                 <span className={`tag ${t.type}`}>
