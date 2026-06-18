@@ -1,8 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
-import API_URL from "./config/api";
-
-import TrendingSearch from "./components/TrendingSearch";
+import api from '../config/api';
+import TrendingSearch from '../components/TrendingSearch';
 
 import {
   ResponsiveContainer,
