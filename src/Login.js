@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import API_URL from "./config/api";
 
 function Login() {
@@ -42,6 +43,11 @@ try {
       if (data.token) {
         localStorage.setItem("token", data.token);
 
+        const decoded = jwtDecode(data.token);
+        console.log("DECODED USER:", decoded);
+
+        localStorage.setItem("user", JSON.stringify(decoded));
+        
         console.log("TOKEN SAVED:", localStorage.getItem("token"));
 
         navigate("/dashboard");

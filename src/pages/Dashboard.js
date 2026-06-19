@@ -4,7 +4,6 @@ import API_URL from "../config/api";
 
 
 import TrendingSearch from '../components/TrendingSearch';
-
 import {
   ResponsiveContainer,
   LineChart,
