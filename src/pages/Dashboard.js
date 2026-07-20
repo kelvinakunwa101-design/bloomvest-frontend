@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { jwtDecode } from "jwt-decode";
 import API_URL from "../config/api";
-
+import PageLayout from "../components/layout/PageLayout";
+import DashboardHeader from "../components/dashboard/DashboardHeader";
 
 import TrendingSearch from '../components/TrendingSearch';
 import {
@@ -124,7 +125,8 @@ function Dashboard() {
     : transactions;
 
   return (
-    <div className="app">
+    <PageLayout>
+        <div className="app">
 
       {/* SIDEBAR */}
       <div className="sidebar">
@@ -620,9 +622,10 @@ body{
 
 }
 
-      `}</style>
+          `}</style>
 
     </div>
+  </PageLayout>
   );
 }
 
