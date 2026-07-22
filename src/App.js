@@ -1,11 +1,16 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/DashboardV2";
+import Wallet from "./pages/Wallet";
+import Investments from "./pages/Investments";
+import Transactions from "./pages/Transactions";
+import Analytics from "./pages/Analytics";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import Login from "./Login";
 
 function App() {
-
   const isAuthenticated = () => {
     return localStorage.getItem("token") !== null;
   };
@@ -13,16 +18,19 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Auto-login logic */}
+        {/* Auto-login */}
         <Route
           path="/"
           element={
-            isAuthenticated() ? <Navigate to="/dashboard" /> : <Login />
+            isAuthenticated() ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Login />
+            )
           }
         />
 
-        {/* Protected dashboard */}
+        {/* Dashboard */}
         <Route
           path="/dashboard"
           element={
@@ -32,6 +40,65 @@ function App() {
           }
         />
 
+        {/* Wallet */}
+        <Route
+          path="/wallet"
+          element={
+            <ProtectedRoute>
+              <Wallet />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Investments */}
+        <Route
+          path="/investments"
+          element={
+            <ProtectedRoute>
+              <Investments />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Transactions */}
+        <Route
+          path="/transactions"
+          element={
+            <ProtectedRoute>
+              <Transactions />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Analytics */}
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <Analytics />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Profile */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Settings */}
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

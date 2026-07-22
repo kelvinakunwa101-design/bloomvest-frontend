@@ -1,0 +1,75 @@
+.wrapper{
+background:#fff;
+padding:24px;
+border-radius:20px;
+margin-bottom:30px;
+box-shadow:0 12px 30px rgba(15,23,42,.08);
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.header button{
+background:#2563EB;
+color:white;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+.card{
+padding:22px;
+border:1px solid #E2E8F0;
+border-radius:18px;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(15,23,42,.10);
+}
+
+.icon{
+width:52px;
+height:52px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:14px;
+color:white;
+margin-bottom:18px;
+}
+
+.progress{
+height:10px;
+background:#E2E8F0;
+border-radius:999px;
+overflow:hidden;
+margin:18px 0;
+}
+
+.fill{
+height:100%;
+border-radius:999px;
+transition:width .8s ease;
+}
+
+.footer{
+display:flex;
+align-items:center;
+gap:8px;
+font-weight:600;
+color:#64748B;
+}

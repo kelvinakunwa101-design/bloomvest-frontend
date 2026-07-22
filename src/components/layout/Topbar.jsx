@@ -1,16 +1,21 @@
-import { FaBell, FaSearch } from "react-icons/fa";
+import {
+  FaBell,
+  FaSearch,
+  FaMoon,
+  FaChevronDown,
+} from "react-icons/fa";
 
 const Topbar = () => {
   return (
     <header
       style={{
-        height: "75px",
-        background: "#fff",
+        height: "80px",
+        background: "#FFFFFF",
+        borderBottom: "1px solid #E2E8F0",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: "0 30px",
-        borderBottom: "1px solid #E5E7EB",
+        padding: "0 35px",
       }}
     >
       <div>
@@ -23,40 +28,87 @@ const Topbar = () => {
           Dashboard
         </h2>
 
-        <small
+        <p
           style={{
-            color: "#6B7280",
+            margin: "6px 0 0",
+            color: "#64748B",
+            fontSize: "14px",
           }}
         >
-          Welcome back 👋
-        </small>
+          Welcome back to Bloomvest 👋
+        </p>
       </div>
 
       <div
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "20px",
+          gap: "18px",
         }}
       >
-        <FaSearch size={18} color="#64748B" />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            background: "#F8FAFC",
+            padding: "10px 16px",
+            borderRadius: "12px",
+            minWidth: "250px",
+          }}
+        >
+          <FaSearch color="#64748B" />
 
-        <FaBell size={18} color="#64748B" />
+          <input
+            type="text"
+            placeholder="Search..."
+            style={{
+              border: "none",
+              outline: "none",
+              background: "transparent",
+              width: "100%",
+              fontSize: "14px",
+            }}
+          />
+        </div>
+
+        <FaMoon
+          size={18}
+          color="#64748B"
+          style={{ cursor: "pointer" }}
+        />
+
+        <FaBell
+          size={18}
+          color="#64748B"
+          style={{ cursor: "pointer" }}
+        />
 
         <div
           style={{
-            width: "40px",
-            height: "40px",
-            borderRadius: "50%",
-            background: "#10B981",
-            color: "#fff",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "bold",
+            gap: "10px",
+            cursor: "pointer",
           }}
         >
-          K
+          <div
+            style={{
+              width: "42px",
+              height: "42px",
+              borderRadius: "50%",
+              background: "#2563EB",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "700",
+            }}
+          >
+            K
+          </div>
+
+          <FaChevronDown color="#64748B" />
         </div>
       </div>
     </header>

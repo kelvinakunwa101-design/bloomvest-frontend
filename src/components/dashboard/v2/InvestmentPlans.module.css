@@ -1,0 +1,93 @@
+.wrapper {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+  margin-bottom: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.header h2 {
+  margin: 0;
+}
+
+.header p {
+  color: #64748B;
+  margin-top: 6px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 22px;
+}
+
+.card {
+  border-radius: 18px;
+  padding: 22px;
+  transition: .3s ease;
+  border: 1px solid #E2E8F0;
+  background: white;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(15,23,42,.12);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: white;
+  font-size: .8rem;
+  font-weight: 600;
+}
+
+.return {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 18px 0;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  color: #64748B;
+}
+
+.progress {
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 18px;
+}
+
+.fill {
+  height: 100%;
+}
+
+.button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}

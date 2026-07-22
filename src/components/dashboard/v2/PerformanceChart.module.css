@@ -1,0 +1,37 @@
+.wrapper {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+  margin-bottom: 30px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title h2 {
+  margin: 0;
+  color: #0F172A;
+}
+
+.title p {
+  margin-top: 6px;
+  color: #64748B;
+  font-size: .9rem;
+}
+
+.badge {
+  background: #DBEAFE;
+  color: #2563EB;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.chart {
+  height: 320px;
+}
