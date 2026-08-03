@@ -5,7 +5,20 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 
+import { useAuth } from "../../context/AuthContext";
+
 const Topbar = () => {
+const { user } = useAuth();
+
+console.log("TOPBAR USER:", user);
+
+  const initials =
+    user?.name
+      ?.split(" ")
+      .map((word) => word[0])
+      .join("")
+      .toUpperCase() || "U";
+
   return (
     <header
       style={{
@@ -35,7 +48,7 @@ const Topbar = () => {
             fontSize: "14px",
           }}
         >
-          Welcome back to Bloomvest 👋
+          Welcome back, <strong>{user?.name || "Investor"}</strong> 👋
         </p>
       </div>
 
@@ -61,7 +74,7 @@ const Topbar = () => {
 
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search investments, transactions..."
             style={{
               border: "none",
               outline: "none",
@@ -88,7 +101,7 @@ const Topbar = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "10px",
+            gap: "12px",
             cursor: "pointer",
           }}
         >
@@ -103,9 +116,54 @@ const Topbar = () => {
               alignItems: "center",
               justifyContent: "center",
               fontWeight: "700",
+              fontSize: "15px",
             }}
           >
-            K
+            {initials}
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              lineHeight: "1.2",
+            }}
+          >
+            <strong
+              style={{
+                color: "#0F172A",
+                fontSize: "14px",
+              }}
+            >
+              {user?.name || "Investor"}
+            </strong>
+
+            <div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: "2px",
+  }}
+>
+  <span
+    style={{
+      color: "#64748B",
+      fontSize: "12px",
+      fontWeight: "600",
+    }}
+  >
+    {user?.investorTier} Investor
+  </span>
+
+  <span
+    style={{
+      color: "#94A3B8",
+      fontSize: "11px",
+    }}
+  >
+         {user?.email}
+          </span>
+          </div>
           </div>
 
           <FaChevronDown color="#64748B" />

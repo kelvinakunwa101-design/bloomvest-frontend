@@ -1,38 +1,95 @@
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import Modal from "../../ui/Modal";
+import API_URL from "../../../config/api";
+import { toast } from "react-toastify";
 import styles from "./InvestmentPlans.module.css";
 
-const plans = [
-  {
-    name: "Starter Plan",
-    returnRate: "8%",
-    duration: "30 Days",
-    minimum: "$500",
-    funded: 63,
-    risk: "Low",
-    color: "#2563EB",
-  },
-  {
-    name: "Growth Plan",
-    returnRate: "15%",
-    duration: "90 Days",
-    minimum: "$2,000",
-    funded: 82,
-    risk: "Medium",
-    color: "#10B981",
-  },
-  {
-    name: "Premium Plan",
-    returnRate: "22%",
-    duration: "180 Days",
-    minimum: "$10,000",
-    funded: 91,
-    risk: "High",
-    color: "#7C3AED",
-  },
-];
+  const InvestmentPlans = ({ onInvestmentCreated }) => {
+  const [selectedPlan, setSelectedPlan] = useState(null);
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [plans, setPlans] = useState([]);
 
-const InvestmentPlans = () => {
-  return (
+  useEffect(() => {
+  const loadPlans = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/investments/plans`);
+      const data = await res.json();
+
+      if (Array.isArray(data)) {
+        setPlans(data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  loadPlans();
+}, []);
+
+  const getMinimumAmount = (minimum) => Number(minimum);
+
+  const handleInvestment = async () => {
+  if (!amount) {
+    toast.warning("Please enter an investment amount.");
+    return;
+  }
+
+  const investmentAmount = Number(amount);
+  const minimumAmount = getMinimumAmount(
+  selectedPlan.minimumAmount
+);
+
+  if (investmentAmount < minimumAmount) {
+    toast.warning(
+  `Minimum investment for ${selectedPlan.name} is ₦${minimumAmount.toLocaleString()}.`
+);
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+    setLoading(true);
+    
+
+    const res = await fetch(`${API_URL}/api/investments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        amount: investmentAmount,
+        plan: selectedPlan.name,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Investment failed");
+    }
+
+    toast.success("Investment created successfully!");
+
+    if (onInvestmentCreated) {
+  await onInvestmentCreated();
+}
+
+setAmount("");
+setSelectedPlan(null);
+
+
+  } catch (err) {
+    toast.error(err.message);
+  }
+  finally {
+  setLoading(false);
+}
+};
+  
+return (
     <motion.section
   className={styles.wrapper}
   initial="hidden"
@@ -89,18 +146,18 @@ const InvestmentPlans = () => {
 
       <h3>{plan.name}</h3>
 
-      <div className={styles.return}>
-        {plan.returnRate} APR
-      </div>
+        <div className={styles.return}>
+             {plan.returnRate}% Expected Return
+       </div>
 
       <div className={styles.info}>
         <span>Duration</span>
-        <strong>{plan.duration}</strong>
+        <strong>{plan.duration} Days</strong>
       </div>
 
       <div className={styles.info}>
         <span>Minimum</span>
-        <strong>{plan.minimum}</strong>
+        <strong>₦{plan.minimumAmount.toLocaleString()}</strong>
       </div>
 
       <div className={styles.progress}>
@@ -125,16 +182,68 @@ const InvestmentPlans = () => {
       </div>
 
       <button
-        className={styles.button}
-        style={{ background: plan.color }}
-      >
-        Invest Now
-      </button>
+         className={styles.button}
+          style={{ background: plan.color }}
+          onClick={() => setSelectedPlan(plan)}
+       >
+             Invest Now
+     </button>
     </motion.div>
         ))}
+            
+         </div>
+
+          <Modal
+  isOpen={!!selectedPlan}
+  onClose={() => setSelectedPlan(null)}
+  title={selectedPlan?.name || "Investment"}
+>
+  <div className={styles.modalContent}>
+    <p>
+      Invest in <strong>{selectedPlan?.name}</strong>
+    </p>
+
+    <div className={styles.summary}>
+      <div>
+        <span>Expected Return</span>
+        <strong>{selectedPlan?.returnRate}</strong>
       </div>
-    </motion.section>
+
+      <div>
+        <span>Duration</span>
+        <strong>{selectedPlan?.duration}</strong>
+      </div>
+
+      <div>
+        <span>Minimum Investment</span>
+        <strong>₦{selectedPlan?.minimumAmount?.toLocaleString()}</strong>
+      </div>
+    </div>
+
+    <label className={styles.label}>
+      Investment Amount
+    </label>
+
+    <input
+  type="number"
+  placeholder="Enter amount"
+  className={styles.input}
+  value={amount}
+  onChange={(e) => setAmount(e.target.value)}
+/>
+
+
+<button
+  className={styles.confirmButton}
+  onClick={handleInvestment}
+  disabled={loading}
+>
+  {loading ? "Processing..." : "Confirm Investment"}
+</button>
+             </div>
+            </Modal>
+      
+          </motion.section>
   );
 };
-
 export default InvestmentPlans;

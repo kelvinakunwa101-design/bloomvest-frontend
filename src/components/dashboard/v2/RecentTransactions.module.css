@@ -47,6 +47,20 @@
   background:#F8FAFC;
 }
 
+.viewAllBtn {
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.viewAllBtn:hover {
+  color: #1d4ed8;
+}
+
+
 .transactionType {
   display: flex;
   align-items: center;

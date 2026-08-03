@@ -16,30 +16,11 @@ const COLORS = [
   "#EF4444",
 ];
 
-const defaultData = [
-  {
-    name: "Stocks",
-    value: 45,
-  },
-  {
-    name: "Real Estate",
-    value: 25,
-  },
-  {
-    name: "Crypto",
-    value: 20,
-  },
-  {
-    name: "Cash",
-    value: 10,
-  },
-];
 
-const AssetAllocation = ({
-  data = defaultData,
-}) => {
 
-  const total = data.reduce(
+const AssetAllocation = ({ data = [] }) => {
+  
+const total = (data || []).reduce(
     (sum, item) => sum + item.value,
     0
   );
@@ -74,7 +55,7 @@ const AssetAllocation = ({
             <PieChart>
 
     <Pie
-      data={data}
+         data={data || []}
       dataKey="value"
       nameKey="name"
       outerRadius={110}
@@ -83,7 +64,7 @@ const AssetAllocation = ({
       isAnimationActive={true}
       animationDuration={1400}
     >
-  {data.map((item, index) => (
+  {(data || []).map((item, index) => (
     <Cell
       key={item.name}
       fill={COLORS[index % COLORS.length]}

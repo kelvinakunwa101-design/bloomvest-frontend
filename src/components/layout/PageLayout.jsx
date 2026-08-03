@@ -1,7 +1,14 @@
+import { useAuth } from "../../context/AuthContext";
 import Sidebar from "../Sidebar";
 import Topbar from "./Topbar";
 
 const PageLayout = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <div style={{ padding: 40 }}>Loading...</div>;
+  }
+
   return (
     <div
       style={{
@@ -10,7 +17,7 @@ const PageLayout = ({ children }) => {
         background: "#F8FAFC",
       }}
     >
-      <Sidebar user={JSON.parse(localStorage.getItem("user") || "null")} />
+      <Sidebar user={user} />
 
       <div
         style={{

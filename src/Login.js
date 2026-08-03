@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { useAuth } from "./context/AuthContext";
 import API_URL from "./config/api";
 
 function Login() {
@@ -8,6 +8,7 @@ function Login() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,16 +42,11 @@ try {
       console.log("LOGIN RESPONSE:", data);
 
       if (data.token) {
-        localStorage.setItem("token", data.token);
+        login(data.user, data.token);
 
-        const decoded = jwtDecode(data.token);
-        console.log("DECODED USER:", decoded);
+        console.log("USER SAVED:", data.user);
 
-        localStorage.setItem("user", JSON.stringify(decoded));
-        
-        console.log("TOKEN SAVED:", localStorage.getItem("token"));
-
-        navigate("/dashboard");
+         navigate("/dashboard");
       } else {
         alert(data.message || "Login failed");
       }

@@ -1,84 +1,74 @@
-import {
-  HiArrowTrendingUp,
-  HiArrowTrendingDown,
-} from "react-icons/hi2";
-
+import { motion } from "framer-motion";
+import { HiArrowTrendingUp, HiArrowTrendingDown } from "react-icons/hi2";
 import styles from "./Watchlist.module.css";
 
-const assets = [
-  {
-    symbol: "BTC",
-    name: "Bitcoin",
-    price: "$118,450",
-    change: "+4.28%",
-    positive: true,
-  },
-  {
-    symbol: "ETH",
-    name: "Ethereum",
-    price: "$6,540",
-    change: "+2.17%",
-    positive: true,
-  },
-  {
-    symbol: "AAPL",
-    name: "Apple Inc.",
-    price: "$231.84",
-    change: "-0.84%",
-    positive: false,
-  },
-  {
-    symbol: "TSLA",
-    name: "Tesla",
-    price: "$412.12",
-    change: "+5.18%",
-    positive: true,
-  },
-];
-
-const Watchlist = () => {
+const Watchlist = ({ assets = [] }) => {
   return (
-    <section className={styles.wrapper}>
+    <motion.section
+      className={styles.wrapper}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
       <div className={styles.header}>
-        <h2>Market Watchlist</h2>
+        <h2>Watchlist</h2>
 
-        <button>Explore Markets</button>
+        <button className={styles.viewAll}>
+          View All
+        </button>
       </div>
 
-      <div className={styles.list}>
-        {assets.map((asset) => (
-          <div
-            key={asset.symbol}
-            className={styles.card}
-          >
-            <div>
-              <h3>{asset.symbol}</h3>
-              <span>{asset.name}</span>
-            </div>
-
-            <div className={styles.price}>
-              {asset.price}
-            </div>
-
-            <div
-              className={
-                asset.positive
-                  ? styles.up
-                  : styles.down
-              }
-            >
-              {asset.positive ? (
-                <HiArrowTrendingUp />
-              ) : (
-                <HiArrowTrendingDown />
-              )}
-
-              {asset.change}
-            </div>
+      {assets.length === 0 ? (
+  <div className={styles.empty}>
+    Your watchlist is empty.
+  </div>
+) : (
+  <div className={styles.list}>
+    {assets.map((asset) => (
+      <motion.div
+        key={asset.id}
+        className={styles.card}
+        whileHover={{ y: -3 }}
+      >
+        <div className={styles.left}>
+          <div className={styles.symbol}>
+            {asset.symbol}
           </div>
-        ))}
-      </div>
-    </section>
+
+          <div>
+            <h4>{asset.name}</h4>
+            <p>{asset.symbol}</p>
+          </div>
+        </div>
+
+        <div className={styles.right}>
+          <strong>
+            ${asset.price.toLocaleString()}
+          </strong>
+
+          <span
+            className={
+              asset.change >= 0
+                ? styles.positive
+                : styles.negative
+            }
+          >
+            {asset.change >= 0 ? (
+              <HiArrowTrendingUp />
+            ) : (
+              <HiArrowTrendingDown />
+            )}
+
+            {asset.change > 0 ? "+" : ""}
+            {asset.change}%
+          </span>
+        </div>
+      </motion.div>
+    ))}
+  </div>
+)}
+    </motion.section>
   );
 };
 

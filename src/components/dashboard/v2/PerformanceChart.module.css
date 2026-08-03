@@ -2,8 +2,9 @@
   background: #fff;
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 12px 30px rgba(15,23,42,.08);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, .08);
   margin-bottom: 30px;
+  width: 100%;
 }
 
 .header {
@@ -33,5 +34,7 @@
 }
 
 .chart {
+  width: 100%;
+  min-width: 0;
   height: 320px;
 }

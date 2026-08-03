@@ -1,4 +1,4 @@
-const DashboardGrid = ({ left, right }) => {
+  const DashboardGrid = ({ left, right }) => {
   return (
     <div
       style={{
@@ -6,15 +6,23 @@ const DashboardGrid = ({ left, right }) => {
         gridTemplateColumns: "2fr 1fr",
         gap: "24px",
         marginTop: "30px",
+        alignItems: "start",
       }}
     >
-      <div>{left}</div>
+      <div
+        style={{
+          minWidth: 0,
+        }}
+      >
+        {left}
+      </div>
 
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           gap: "20px",
+          minWidth: 0,
         }}
       >
         {right}

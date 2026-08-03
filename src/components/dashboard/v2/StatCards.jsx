@@ -1,3 +1,4 @@
+import { formatCurrency } from "../../../utils/currency";
 import { motion } from "framer-motion";
 import {
   HiOutlineWallet,
@@ -51,11 +52,11 @@ const StatCards = ({
 }) => {
 
   const values = {
-    wallet: `$${Number(wallet).toLocaleString()}`,
-    profit: `$${Number(profit).toLocaleString()}`,
-    transactions,
-    investments,
-  };
+  wallet: formatCurrency(wallet),
+  profit: formatCurrency(profit),
+  transactions: transactions,
+  investments: investments,
+};
 
   return (
     <motion.div
@@ -71,16 +72,22 @@ const StatCards = ({
   }}
 >
       {cards.map((card) => (
-      <motion.div
-  className={styles.container}
-  initial="hidden"
-  animate="visible"
-  variants={{
-    visible: {
-      transition: {
-        staggerChildren: 0.15,
-      },
+       <motion.div
+    key={card.key}
+    className={styles.card}
+    variants={{
+    hidden: {
+      opacity: 0,
+      y: 25,
     },
+    visible: {
+      opacity: 1,
+      y: 0,
+    },
+  }}
+  whileHover={{
+    y: -6,
+    scale: 1.02,
   }}
 >
           <div className={styles.header}>

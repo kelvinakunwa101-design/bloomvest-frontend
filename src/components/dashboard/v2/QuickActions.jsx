@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   HiOutlineBanknotes,
   HiOutlineArrowDownTray,
@@ -7,6 +8,8 @@ import {
 
 
 import { motion } from "framer-motion";
+import DepositModal from "./DepositModal";
+import WithdrawModal from "./WithdrawModal";
 import styles from "./QuickActions.module.css";
 
 const actions = [
@@ -36,7 +39,9 @@ const actions = [
   },
 ];
 
-const QuickActions = () => {
+const QuickActions = ({ onActionComplete }) => {
+const [depositOpen, setDepositOpen] = useState(false);
+const [withdrawOpen, setWithdrawOpen] = useState(false);
   return (
     <motion.section
   className={styles.wrapper}
@@ -58,6 +63,15 @@ const QuickActions = () => {
         {actions.map((action) => (
         <motion.div
   key={action.title}
+   onClick={() => {
+  if (action.title === "Deposit") {
+    setDepositOpen(true);
+  }
+
+  if (action.title === "Withdraw") {
+    setWithdrawOpen(true);
+  }
+}}
   className={styles.card}
   style={{ background: action.color }}
   variants={{
@@ -107,6 +121,17 @@ const QuickActions = () => {
           </motion.div>
         ))}
       </div>
+      <DepositModal
+  isOpen={depositOpen}
+  onClose={() => setDepositOpen(false)}
+  onSuccess={onActionComplete}
+/>
+
+<WithdrawModal
+  isOpen={withdrawOpen}
+  onClose={() => setWithdrawOpen(false)}
+  onSuccess={onActionComplete}
+/>
     </motion.section>
   );
 };

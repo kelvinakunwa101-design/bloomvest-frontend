@@ -1,3 +1,4 @@
+import { formatCurrency } from "../../../utils/currency";
 import { motion } from "framer-motion";
 import styles from "./PerformanceChart.module.css";
 
@@ -39,9 +40,9 @@ const PerformanceChart = ({ data }) => {
 
       <div className={styles.chart}>
         <ResponsiveContainer
-          width="100%"
-          height="100%"
-        >
+             width="100%"
+             height={320}
+          >
           <AreaChart data={data}>
 
             <defs>
@@ -71,11 +72,13 @@ const PerformanceChart = ({ data }) => {
               vertical={false}
             />
 
-            <XAxis dataKey="date" />
+            <XAxis dataKey="index" />
 
-            <YAxis />
+            <YAxis tickFormatter={(value) => formatCurrency(value)} />
 
-            <Tooltip />
+            <Tooltip
+            formatter={(value) => formatCurrency(value)}
+           />
 
           <Area
             type="monotone"

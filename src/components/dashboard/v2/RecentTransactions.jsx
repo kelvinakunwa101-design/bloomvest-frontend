@@ -5,9 +5,14 @@ import {
   HiChartBar,
 } from "react-icons/hi2";
 
+import { formatCurrency } from "../../../utils/currency";
 import styles from "./RecentTransactions.module.css";
+import { useNavigate } from "react-router-dom";
+
 
 const RecentTransactions = ({ transactions = [] }) => {
+const navigate = useNavigate();
+
   return (
       <motion.section
         className={styles.wrapper}
@@ -22,14 +27,19 @@ const RecentTransactions = ({ transactions = [] }) => {
       <div className={styles.header}>
         <h2>Recent Transactions</h2>
 
-        <button>View All</button>
-      </div>
+        <button
+           className={styles.viewAllBtn}
+            onClick={() => navigate("/transactions")}
+        >
+                 View All
+                 </button>
+                </div>
 
-      {transactions.length === 0 ? (
-        <div className={styles.empty}>
-          No recent transactions found.
-        </div>
-      ) : (
+            {transactions.length === 0 ? (
+            <div className={styles.empty}>
+            No recent transactions found.
+          </div>
+          ) : (
         <table className={styles.table}>
           <thead>
             <tr>
@@ -43,7 +53,10 @@ const RecentTransactions = ({ transactions = [] }) => {
           <tbody>
             {transactions.map((item) => (
               <motion.tr
-                 key={item._id}
+                 whileHover={{
+                  backgroundColor: "#F8FAFC",
+               }}
+                 key={`${item.type}-${item.createdAt}`}
                  className={styles.row}
                  initial={{
                    opacity: 0,
@@ -73,21 +86,22 @@ const RecentTransactions = ({ transactions = [] }) => {
             textTransform: "capitalize",
             }}
             >
-             {item.type}
+             {item.type || "Transaction"}
             </span>
                </div>
                </td>
 
                 <td
-                  className={
+                       className={
                     item.type === "deposit"
                       ? styles.deposit
-                      : item.type === "withdrawal"
+                     : item.type === "withdrawal"
                       ? styles.withdrawal
-                      : styles.profit
-                  }
+                     : styles.profit
+                    }
+                  
                 >
-                  ${Number(item.amount).toLocaleString()}
+                  {formatCurrency(item.amount)}
                 </td>
 
                 <td>
@@ -104,9 +118,19 @@ const RecentTransactions = ({ transactions = [] }) => {
                 </td>
 
                 <td>
-                  <span className={styles.status}>
-                    Completed
-                  </span>
+                  <span
+  className={styles.status}
+  style={{
+    background:
+      item.status === "completed"
+        ? "#10B981"
+        : item.status === "pending"
+        ? "#F59E0B"
+        : "#EF4444",
+  }}
+>
+  {item.status || "Completed"}
+</span>
                 </td>
               </motion.tr>
             ))}
