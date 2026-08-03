@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from "react";
-import { jwtDecode } from "jwt-decode";
 import API_URL from "../config/api";
 
 import PageLayout from "../components/layout/PageLayout";
@@ -18,8 +17,6 @@ import QuickActions from "../components/dashboard/v2/QuickActions";
 
 
 function DashboardV2() {
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showWithdraw, setShowWithdraw] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [investments, setInvestments] = useState([]);
   const [wallet, setWallet] = useState({
