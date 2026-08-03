@@ -3,6 +3,9 @@ import API_URL from "../config/api";
 
 import PageLayout from "../components/layout/PageLayout";
 
+import DepositModal from "../components/dashboard/v2/DepositModal";
+import WithdrawModal from "../components/dashboard/v2/WithdrawModal";
+
 import { useAuth } from "../context/AuthContext";
 import DashboardGrid from "../components/dashboard/v2/DashboardGrid";
 import PortfolioHero from "../components/dashboard/v2/PortfolioHero";
@@ -17,6 +20,8 @@ import QuickActions from "../components/dashboard/v2/QuickActions";
 
 
 function DashboardV2() {
+  const [showDeposit, setShowDeposit] = useState(false);
+  const [showWithdraw, setShowWithdraw] = useState(false);
   const [transactions, setTransactions] = useState([]);
   const [investments, setInvestments] = useState([]);
   const [wallet, setWallet] = useState({
@@ -138,11 +143,13 @@ function DashboardV2() {
   return (
     <PageLayout>
       <PortfolioHero
-        user={user}
-      wallet={wallet}
- investments={investments}
-      profit={profit}
-     />
+          user={user}
+          wallet={wallet}
+        investments={investments}
+        profit={profit}
+       onDeposit={() => setShowDeposit(true)}
+       onWithdraw={() => setShowWithdraw(true)}
+    />
       
       <StatCards
         wallet={wallet.balance}
@@ -182,6 +189,17 @@ function DashboardV2() {
           </>
         }
       />
+      <DepositModal
+  isOpen={showDeposit}
+  onClose={() => setShowDeposit(false)}
+  onSuccess={load}
+/>
+
+<WithdrawModal
+  isOpen={showWithdraw}
+  onClose={() => setShowWithdraw(false)}
+  onSuccess={load}
+/>
     </PageLayout>
   );
 }
